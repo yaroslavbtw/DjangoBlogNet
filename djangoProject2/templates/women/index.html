@@ -1,0 +1,25 @@
+{% extends 'women/base.html' %}
+{% load women_tags %}
+
+{% block content %}
+<ul class="list-articles">
+	{% for p in posts %}
+        <li>
+        <div class="article-panel">
+            {% find_categories_slug p.cat_id as cat_slug%}
+                <p class="first">Категория: <a href="{% url 'show_category' cat_slug%}">{{p.cat}}</a></p>
+                <p class="last">Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+        </div>
+			<h2>{{p.title}}</h2>
+        {% if p.photo %}
+                 <p><img class="img-article-left thumb" src="{{p.photo.url}}" alt="нихуя нет"></p>
+        {% endif %}
+	{% autoescape on %}
+	{{p.content|linebreaks|truncatewords:50}}
+	{% endautoescape %}
+			<div class="clear"></div>
+			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+        </li>
+	{% endfor %}
+</ul>
+{% endblock %}
